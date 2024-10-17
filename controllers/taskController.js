@@ -1,6 +1,9 @@
+// controllers/taskController.js
+
+const { validationResult } = require('express-validator');
 const Task = require('../models/Task');
 
-// Listar  tarefas
+// Listar todas as tarefas
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.findAll();
@@ -10,12 +13,15 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// Criar tarefa
+// Criar uma nova tarefa
 exports.createTask = async (req, res) => {
-  const { title } = req.body;
-  if (!title) {
-    return res.status(400).json({ error: 'O título da tarefa é obrigatório' });
+  // Valida os dados de entrada
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
+
+  const { title } = req.body;
 
   try {
     const task = await Task.create({ title });
@@ -25,8 +31,13 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// atualizar o status da tarefa
+// Atualizar o status de uma tarefa
 exports.updateTask = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { id } = req.params;
   const { status } = req.body;
 
@@ -44,7 +55,7 @@ exports.updateTask = async (req, res) => {
   }
 };
 
-// deletar uma tarefw
+// Deletar uma tarefa
 exports.deleteTask = async (req, res) => {
   const { id } = req.params;
 

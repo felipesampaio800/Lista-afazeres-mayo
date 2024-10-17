@@ -11,11 +11,11 @@ const Task = sequelize.define('Task', {
   },
   status: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,  // Pendente por padrão
+    defaultValue: false,  
   }
 }, {
-  tableName: 'tasks',  // Nome da tabela no MySQL
-  timestamps: true     // Adiciona createdAt e updatedAt automaticamente
+  tableName: 'tasks',  
+  timestamps: true     
 });
 
 module.exports = Task;
