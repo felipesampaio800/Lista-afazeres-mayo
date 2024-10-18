@@ -1,19 +1,31 @@
-// URL da API para interação com as rotas do backend
-const API_URL = 'http://localhost:3000/api/tasks';
+let API_URL = ''; // Variável para armazenar a URL da API
 const token = localStorage.getItem('token'); 
 
+// Função para redirecionar para a página de login
 function redirectToLogin() {
     alert('Acesso não autorizado! Faça login novamente.');
     window.location.href = 'login.html';
 }
 
-// escapar caracteres especiais e evitar injeção de scripts
+// Função para escapar caracteres especiais e evitar injeção de scripts
 function escapeHTML(text) {
     const div = document.createElement('div');
     div.innerText = text;
     return div.innerHTML;
 }
 
+// Função para buscar a configuração (URL da API)
+async function fetchConfig() {
+    try {
+        const response = await fetch('/config');
+        const data = await response.json();
+        API_URL = `${data.API_BASE_URL}/api/tasks`; // Define a URL completa da API
+    } catch (error) {
+        console.error('Erro ao buscar configuração:', error);
+    }
+}
+
+// Função para carregar todas as tarefas
 async function loadTasks() {
     if (!token) {
         redirectToLogin();
@@ -34,7 +46,7 @@ async function loadTasks() {
         }
 
         const tasks = await response.json();
-        console.log('Resposta da API:', tasks);  // Adiciona um log da resposta recebida
+        console.log('Resposta da API:', tasks);  // Log da resposta
 
         // Certifique-se de que a resposta é uma lista de tarefas
         if (Array.isArray(tasks)) {
@@ -63,7 +75,6 @@ async function loadTasks() {
     }
 }
 
-
 // Função para adicionar uma nova tarefa
 async function addTask() {
     const taskInput = document.getElementById('new-task');
@@ -84,7 +95,6 @@ async function addTask() {
             body: JSON.stringify({ title }),
         });
 
-        
         if (response.status === 401 || response.status === 403) {
             redirectToLogin();
             return;
@@ -97,7 +107,7 @@ async function addTask() {
     }
 }
 
-
+// Função para alternar o status da tarefa (concluída ou pendente)
 async function toggleTask(id, status) {
     try {
         const response = await fetch(`${API_URL}/${id}`, {
@@ -109,7 +119,6 @@ async function toggleTask(id, status) {
             body: JSON.stringify({ status }),
         });
 
-        
         if (response.status === 401 || response.status === 403) {
             redirectToLogin();
             return;
@@ -121,7 +130,7 @@ async function toggleTask(id, status) {
     }
 }
 
-
+// Função para excluir uma tarefa
 async function deleteTask(id) {
     try {
         const response = await fetch(`${API_URL}/${id}`, {
@@ -131,7 +140,6 @@ async function deleteTask(id) {
             },
         });
 
-        
         if (response.status === 401 || response.status === 403) {
             redirectToLogin();
             return;
@@ -143,5 +151,7 @@ async function deleteTask(id) {
     }
 }
 
-
-loadTasks();
+// Primeiro busca a URL da API, depois carrega as tarefas
+fetchConfig().then(() => {
+    loadTasks(); 
+});

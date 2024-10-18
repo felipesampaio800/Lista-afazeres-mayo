@@ -32,6 +32,11 @@ app.use('/auth', authRoutes);
 // Rotas de tarefas protegidas por autenticação
 app.use('/api', verifyToken, taskRoutes);
 
+app.get('/config', (req, res) => {
+  res.json({ API_BASE_URL: process.env.API_BASE_URL });
+});
+
+
 // Servir a página HTML principal
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
