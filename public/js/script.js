@@ -14,9 +14,7 @@ function escapeHTML(text) {
     return div.innerHTML;
 }
 
-//  carregar todas as tarefas e atualizar a interface
 async function loadTasks() {
-    
     if (!token) {
         redirectToLogin();
         return;
@@ -26,7 +24,7 @@ async function loadTasks() {
         const response = await fetch(API_URL, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                'Authorization': `Bearer ${token}`,
             },
         });
 
@@ -36,11 +34,12 @@ async function loadTasks() {
         }
 
         const tasks = await response.json();
+        console.log('Resposta da API:', tasks);  // Adiciona um log da resposta recebida
 
-        // Certifica-se de que a resposta é uma lista de tarefas
+        // Certifique-se de que a resposta é uma lista de tarefas
         if (Array.isArray(tasks)) {
             const taskList = document.getElementById('task-list');
-            taskList.innerHTML = ''; 
+            taskList.innerHTML = '';  // Limpa a lista antes de renderizar
 
             tasks.forEach(task => {
                 const taskItem = document.createElement('li');
@@ -49,7 +48,6 @@ async function loadTasks() {
                     taskItem.classList.add('completed');
                 }
 
-                
                 taskItem.innerHTML = `
                     <input type="checkbox" ${task.status ? 'checked' : ''} onchange="toggleTask(${task.id}, ${!task.status})">
                     <span>${escapeHTML(task.title)}</span>
@@ -64,6 +62,7 @@ async function loadTasks() {
         console.error('Erro ao carregar tarefas:', error);
     }
 }
+
 
 // Função para adicionar uma nova tarefa
 async function addTask() {
