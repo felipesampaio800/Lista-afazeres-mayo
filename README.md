@@ -85,7 +85,7 @@ Durante o desenvolvimento da aplicação, encontrei alguns erros que precisei re
 
 Enquanto implementava o frontend, me deparei com um problema na renderização da lista de tarefas. Os itens não estavam aparecendo corretamente alinhados, como mostrado na imagem abaixo:
 
-![Erro de Renderização](./path/to/imagem/erro.png)
+![Erro de Renderização](./docs/imgs/error.png)
 
 **Causa**: O problema estava relacionado ao layout HTML combinado com a estilização em CSS. Além disso, percebi que os dados recebidos do backend não estavam sendo devidamente sanitizados, causando inconsistências na exibição.
 
@@ -95,6 +95,6 @@ Enquanto implementava o frontend, me deparei com um problema na renderização d
 
 Após essas mudanças, o layout ficou mais limpo e funcional, com as tarefas sendo renderizadas corretamente, como pode ser visto na imagem corrigida:
 
-![Layout Corrigido](./path/to/imagem/corrigido.png)
+![Layout Corrigido](./docs/imgs/solution.png)
 
 Agora, a aplicação está funcionando perfeitamente e com uma interface muito mais agradável e responsiva. 🚀
