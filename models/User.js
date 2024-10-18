@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const bcrypt = require('bcrypt');
 
-// usuários
+// Modelo de Usuário
 const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
@@ -14,11 +14,11 @@ const User = sequelize.define('User', {
     allowNull: false
   }
 }, {
-  tableName: 'users',  
+  tableName: 'users', // Nome da tabela no MySQL
   timestamps: true
 });
 
-
+// Hash da senha antes de salvar o usuário
 User.beforeSave(async (user, options) => {
   if (user.password) {
     const salt = await bcrypt.genSalt(10);
