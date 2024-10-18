@@ -28,27 +28,31 @@ document.getElementById('register-form')?.addEventListener('submit', async (even
 });
 
 // Manipular o login de usuário
-document.getElementById('login-form')?.addEventListener('submit', async (event) => {
+document.getElementById('login-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch(LOGIN_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    });
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
 
-    const result = await response.json();
-    
-    if (response.ok) {
-        localStorage.setItem('token', result.token); // Armazenar o token JWT no localStorage
-        alert('Login bem-sucedido!');
-        window.location.href = 'taskManager.html'; // Redirecionar para a tela principal
-    } else {
-        alert(result.error || 'Erro ao fazer login');
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('username', data.username);  // Armazena o nome do usuário
+            localStorage.setItem('token', data.token);  // Armazena o token JWT
+            window.location.href = 'taskManager.html';  // Redireciona para a página de tarefas
+        } else {
+            alert('Falha no login');
+        }
+    } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        alert('Erro ao conectar ao servidor. Tente novamente.');
     }
 });

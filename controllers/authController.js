@@ -22,28 +22,20 @@ exports.login = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Busca o usuário pelo nome de usuário
-    const user = await User.findOne({ where: { username } });
-    if (!user) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
-    }
+      const user = await User.findOne({ where: { username } });
+      if (!user) {
+          return res.status(404).json({ error: 'Usuário não encontrado' });
+      }
 
-    // Compara a senha fornecida com a senha armazenada
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Senha incorreta' });
-    }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ error: 'Senha incorreta' });
+      }
 
-    // Gera o token JWT
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    // Retorna o token
-    res.json({ token });
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.json({ username: user.username, token });  // Certifique-se de enviar o nome do usuário e o token
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao realizar login' });
+      res.status(500).json({ error: 'Erro ao fazer login' });
   }
 };
+

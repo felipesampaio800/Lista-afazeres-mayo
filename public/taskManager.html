@@ -9,7 +9,11 @@
 <body>
 
     <div class="container">
-        <h1>To-Do List</h1>
+        <!-- Header com o botão de logout -->
+        <div class="header">
+            <h1>Bem-vindo(a), <span id="user-name"></span>!</h1>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
 
         <!-- Formulário de criação de tarefas -->
         <div class="task-form">
@@ -19,7 +23,26 @@
 
         <!-- Lista de tarefas -->
         <ul class="task-list" id="task-list"></ul>
+        <ul class="task-list" id="task-list"></ul>
     </div>
+
+    <!-- Script para exibir o nome do usuário e função de logout -->
+    <script>
+        // Exibe o nome do usuário na tela
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username') || 'Usuário';
+            document.getElementById('user-name').textContent = username;
+        });
+
+        // Função de logout
+        function logout() {
+            // Remove os dados do localStorage (token e username)
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            // Redireciona para a página de login
+            window.location.href = 'login.html';
+        }
+    </script>
 
     <script src="js/script.js"></script>
 </body>
