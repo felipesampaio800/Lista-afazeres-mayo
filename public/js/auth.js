@@ -1,6 +1,6 @@
 // URL da API de autenticação
-const REGISTER_URL = 'http://localhost:3000/auth/register';
-const LOGIN_URL = 'http://localhost:3000/auth/login';
+const REGISTER_URL = `${API_BASE_URL}/auth/register`;
+const LOGIN_URL = `${API_BASE_URL}/auth/login`;
 
 // Manipular o registro de usuário
 document.getElementById('register-form')?.addEventListener('submit', async (event) => {
@@ -35,7 +35,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('/auth/login', {
+        const response = await fetch(LOGIN_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
